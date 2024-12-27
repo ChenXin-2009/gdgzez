@@ -1,0 +1,49 @@
+﻿$(document)
+    .ready(function () {
+
+        //全部链接本页面打开
+        $("a").removeAttr("target");
+
+        //返回顶部
+        var goTop = $('<span id="goTop"></span>');
+        $("body").append(goTop);
+        var winH,
+            winT;
+        var winFun = function () {
+            winH = $(window).height();
+            winT = $(document).scrollTop();
+            if (winT > winH) {
+                goTop.fadeIn();
+            } else {
+                goTop.fadeOut();
+            }
+        };
+        goTop.click(function () { $("html, body").animate({ scrollTop: 0 }, 0) });
+        $(window).scroll(winFun);
+
+        //搜索、导航遮罩
+        var winMark = $('<span id="winMark"></span>');
+        $("body").append(winMark);
+
+        var showList = $("[showId]");
+        var hideBox = $("[hideBox]");
+        showList.click(function () {
+            showList.not($(this)).removeClass("on");
+            hideBox.not($(this).attr("showId")).removeClass("show");
+
+            if ($(this).hasClass("on")) {
+                $(this).removeClass("on");
+                $($(this).attr("showId")).removeClass("show");
+                winMark.removeClass("show");
+            } else {
+                $(this).addClass("on");
+                $($(this).attr("showId")).addClass("show");
+                winMark.addClass("show");
+            }
+        });
+        winMark.click(function () {
+            showList.removeClass("on");
+            hideBox.removeClass("show");
+            $(this).removeClass("show");
+        });
+    });
