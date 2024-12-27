@@ -1,0 +1,265 @@
+﻿$(function () {
+    var interval = 60; // 间隔函数，1秒执行
+    var curInterval; // 当前剩余秒数
+    var timerObj; // timer变量，控制时间
+
+    var requiredTips = '短信验证码 字段是必需的。';
+    var emptyPhoneNumberTips = '请填写手机号码。';
+
+    var data = $('[data-type=phonemessagevalidate]');
+    var reg = /^1(3[0-9]|4[57]|5[0-35-9]|6[6]|8[0-9]|9[01589]|7[035678])\d{8}$/;
+    var requestUrl,
+        codeElement,
+        basisElement,
+        tips;
+    var codeIntervalTime = data.attr('data-val-codeIntervalTime');
+    if (codeIntervalTime == '' || codeIntervalTime == null || codeIntervalTime == undefined) {
+        codeIntervalTime = '60';
+    }
+
+    var showGraphValidateCodeUrl = '/user/ShowGraphValidateCode';
+    InitCodeIntervalTime();
+
+    $.each(data,
+        function (i, v) {
+        var getCodeBtn = $(v).children('input[type=button]');
+        var element = $(v).attr('data-val-codeelement');
+        var phoneMessageValidateCode = $('#' + element);
+        if (phoneMessageValidateCode.length > 0) {
+            phoneMessageValidateCode.rules('add', { required: true, messages: { required: requiredTips } });
+        }
+
+        getCodeBtn.unbind().click(function () {
+            getCode(getCodeBtn);
+        });
+    });
+
+    function getCode(_this) {
+        var checkPhone = $(_this).data('nocheckphone');
+        $(_this).attr("message", "重发验证码");
+        setInfo(_this);
+        var modal = _this.parents().children('#ShowGraphValidateCodeModal');
+        var isShow = modal.css('display');
+        tipsClassHandler();
+        var phoneNumber = $('#' + basisElement).val();
+        if (phoneNumber) {
+            phoneNumber = phoneNumber.trim();
+        }
+        if (phoneNumber === '' || !phoneNumber) {
+            tips.html(getTipsHtml(false, emptyPhoneNumberTips));
+            return;
+        }
+        if (!reg.test(phoneNumber) && !checkPhone) {
+            return false;
+        }
+
+        $.get(showGraphValidateCodeUrl, function (data) {
+            var result = false;
+            var ticketId = $("#js-ticketId_phone-vc").val();
+            var jsTicketValue = $("#js-ticket_phone-vc").val();
+            if (data.toString() == "true" || data.toString() == "True") {
+                result = true;
+            }
+
+            if (result && modal.length == 0) {
+                tips.html(
+                    getTipsHtml(false, "缺少图形验证码标记，请联系管理员！")
+                );
+                return false;
+            }
+            if (result && isShow == "none" && !ticketId) {
+                $("#js-btn-verify_phone-vc").attr(
+                    "captcha-after",
+                    "js-btn-verify_phone-vc"
+                );
+                SimCaptcha.SetSuccessCallBack(
+                    "js-btn-verify_phone-vc",
+                    function () {
+                        _this.click();
+                    }
+                );
+                $("#js-btn-verify_phone-vc").click();
+                return;
+            }
+
+                var code = $(modal).find("#GraphValidateCode").val();
+                var userName = $("#UserName").val();
+                tipsClassHandler();
+
+                $.ajaxPreventCSRF({
+                    type: "post",
+                    dataType: "json",
+                    url: requestUrl,
+                    data: {
+                        phoneNumber: phoneNumber,
+                        userName: userName,
+                        CaptchaTicketId:ticketId,CaptchaTicket:jsTicketValue,
+                    },
+                    success: function (result) {
+                        if (result.state == "error") {
+                            $(".graph-code-modal-backdrop").hide();
+                            tips.html(getTipsHtml(false, result.message));
+                        } else {
+                            if (
+                                !result.IsSuccess &&
+                                result.IsGraphValidateCode
+                            ) {
+                                if (
+                                    $(modal).find("#graph-validation-error")
+                                        .length == 0
+                                ) {
+                                    tips.html(
+                                        getTipsHtml(false, "缺少图形验证码")
+                                    );
+                                } else {
+                                    $(modal)
+                                        .find("#graph-validation-error")
+                                        .html(result.Tips);
+                                    $(modal)
+                                        .find(".validationcode img")
+                                        .click();
+                                }
+                            } else {
+                                if (result.IsSuccess) {
+                                    $(".graph-code-modal-backdrop").hide();
+                                    // 设置按钮显示效果，倒计时
+                                    _this.attr("disabled", "true");
+                                    interval = result.SurplusSecond;
+                                    curInterval = interval;
+                                    timerObj = window.setInterval(
+                                        setRemainTime,
+                                        1000
+                                    ); // 启动计时器，1秒执行一次
+                                    tips.html(getTipsHtml(true, result.Tips));
+                                } else {
+                                    $(".graph-code-modal-backdrop").hide();
+                                    if (result.SurplusSecond > 0) {
+                                        _this.attr("disabled", "true");
+                                        curInterval = result.SurplusSecond;
+                                        timerObj = window.setInterval(
+                                            setRemainTime,
+                                            1000
+                                        ); // 启动计时器，1秒执行一次
+                                    }
+
+                                    tips.html(getTipsHtml(false, result.Tips));
+                                }
+                                window.timerObj = timerObj;
+                            }
+                        }
+
+                        refreshValidateCode();
+                    },
+                });
+                
+                refreshValidateCode();
+        });
+    }
+
+    // timer处理函数
+    function setRemainTime() {
+        if (curInterval === 0) {
+            window.clearInterval(timerObj); // 停止计时器
+            $.each(data,
+                function (i, v) {
+                var getCodeBtn = $(v).children('input[type=button]');
+                    var message = "发送验证码";
+                    if ($(getCodeBtn).attr("message")) {
+                        message = "重发验证码";
+                    }
+                    getCodeBtn.removeAttr('disabled').val(message); // 启用按钮
+            });
+
+        } else {
+            curInterval--;
+            $.each(data,
+                function (i, v) {
+                var getCodeBtn = $(v).children('input[type=button]');
+                getCodeBtn.val(curInterval + 's');
+            });
+        }
+    }
+
+    function getTipsHtml(isSuccess, tipsText) {
+        if (isSuccess) {
+            return '<span style="color:green">' + tipsText + '</span>';
+        }
+
+        return '<span style="color:red">' + tipsText + '</span>';
+    }
+
+    function tipsClassHandler() {
+        tips.removeClass('field-validation-valid');
+        tips.addClass('field-validation-error');
+    }
+
+    function InitCodeIntervalTime() {
+        var cookie = GetCookies();
+        var cookieTime = cookie["Power_PhoneValidateCode_IntervalTime"];
+        var nowTime = parseInt(new Date().getTime() / 1000);
+        var intervalTime = parseInt(codeIntervalTime);
+        if (intervalTime < 0 || intervalTime == 0) {
+            intervalTime = 60;
+        }
+
+        if (nowTime - parseInt(cookieTime) < intervalTime) {
+            if (nowTime - parseInt(cookieTime) < 0) {
+                curInterval = 60;
+            } else {
+                curInterval = intervalTime - (nowTime - parseInt(cookieTime));
+            }
+            // 设置按钮显示效果，倒计时
+            $.each(data,
+                function (i, v) {
+                    var getCodeBtn = $(v).children('input[type=button]');
+                    getCodeBtn.attr('disabled', 'true');
+                });
+
+            timerObj = window.setInterval(setRemainTime, 1000); // 启动计时器，1秒执行一次
+        }
+    }
+
+    function GetCookies() {
+        var cookieStr = document.cookie;
+        var cookie = {};
+        if (cookieStr != '') {
+            var cookieStrs = cookieStr.split(';');
+            $.each(cookieStrs,
+                function (i, v) {
+                var item = v.split('=');
+                cookie[item[0].replace(/(^\s*)|(\s*$)/g, "")] = item[1].replace(/(^\s*)|(\s*$)/g, "");
+            });
+        }
+
+        return cookie;
+    }
+
+    function refreshValidateCode() {
+        window.captchaCallbackDynamicName(function () {
+        });
+    }
+    $("#ShowGraphValidateCodeModal .close").click(function () {
+        $(this).parents('#ShowGraphValidateCodeModal').hide();
+        $('.graph-code-modal-backdrop').hide();
+    });
+    function SetHeight(index) {
+        $('#ShowGraphValidateCodeModal .modal-dialog').css('margin-top', index);
+    }
+    function setInfo(_this) {
+        var info = _this.parents('[data-type=phonemessagevalidate]');
+        requestUrl = info.attr('data-val-requesturl');
+        codeElement = info.attr('data-val-codeelement');
+        basisElement = info.attr('data-val-basiselement');
+        tips = info.next('[data-valmsg-for=' + codeElement + ']');
+
+
+    }
+
+    $(data).children('input').on('keydown',
+        function () {
+        var value = $(this).val();
+            if (value.length >= 8) {
+            return false;
+        }
+    });
+});

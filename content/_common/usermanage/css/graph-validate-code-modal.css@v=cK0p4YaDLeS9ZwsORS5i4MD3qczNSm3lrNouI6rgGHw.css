@@ -1,0 +1,247 @@
+﻿/*验证码*/
+#ShowGraphValidateCodeModal .close {
+    float: right;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1;
+    color: #000000;
+    text-shadow: 0 1px 0 #ffffff;
+    opacity: 0.2;
+    filter: alpha(opacity=20);
+}
+
+    #ShowGraphValidateCodeModal .close:hover,
+    #ShowGraphValidateCodeModal .close:focus {
+        color: #000000;
+        text-decoration: none;
+        cursor: pointer;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+    }
+
+#ShowGraphValidateCodeModal  button.close {
+    padding: 0;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    -webkit-appearance: none;
+}
+
+#ShowGraphValidateCodeModal -open {
+    overflow: hidden;
+}
+
+#ShowGraphValidateCodeModal  {
+    display: none;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1530;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+}
+
+    #ShowGraphValidateCodeModal .fade .modal-dialog {
+        -webkit-transform: translate(0, -25%);
+        -ms-transform: translate(0, -25%);
+        -o-transform: translate(0, -25%);
+        transform: translate(0, -25%);
+        -webkit-transition: -webkit-transform 0.3s ease-out;
+        -o-transition: -o-transform 0.3s ease-out;
+        transition: transform 0.3s ease-out;
+    }
+
+    #ShowGraphValidateCodeModal .modal-dialog {
+        -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        -o-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+
+#ShowGraphValidateCodeModal .modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#ShowGraphValidateCodeModal .modal-dialog {
+    max-width: 400px;
+    position: relative;
+    width: auto;
+    margin: auto;
+}
+
+#ShowGraphValidateCodeModal .modal-content {
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #999999;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    outline: 0;
+}
+
+.graph-code-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    background-color: #000000;
+}
+
+    .graph-code-modal-backdrop.fade {
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+    .graph-code-modal-backdrop.in {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+    }
+
+#ShowGraphValidateCodeModal .modal-header {
+    padding: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+    #ShowGraphValidateCodeModal .modal-header .close {
+        margin-top: -10px;
+    }
+
+#ShowGraphValidateCodeModal .modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+
+#ShowGraphValidateCodeModal .modal-body {
+    position: relative;
+    padding: 10px;
+}
+
+#ShowGraphValidateCodeModal #graph_confirmNotApprove {
+    position: absolute;
+    top: 11px;
+    right: 30px;
+    width: auto;
+    height: auto;
+}
+
+#ShowGraphValidateCodeModal .modal-scrollbar-measure {
+    position: absolute;
+    top: -9999px;
+    width: 50px;
+    height: 50px;
+    overflow: scroll;
+}
+
+#ShowGraphValidateCodeModal .btn-sm,
+#ShowGraphValidateCodeModal .btn-group-sm > .btn {
+    width: auto;
+    height: auto;
+}
+
+#ShowGraphValidateCodeModal .btn-primary {
+    color: #ffffff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+
+    #ShowGraphValidateCodeModal .btn-primary:hover {
+        color: #ffffff;
+        background-color: #286090;
+        border-color: #204d74;
+    }
+
+
+#ShowGraphValidateCodeModal input[type="text"] {
+    display: block;
+    padding: 5px 2px 5px 5px;
+    width: 98%;
+    height: 32px;
+    outline: none;
+    border: 1px solid #cbd5dd;
+    border-radius: 5px;
+    background-color: #fff;
+    background-image: none;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    font-family: 'Microsoft YaHei', 'PingFang SC', Arial, sans-serif;
+    color: #767676;
+    text-align: left;
+    font-size: 18px;
+    line-height: 1.42857;
+    -o-transition: border-color ease-in-out 0.55s, box-shadow ease-in-out .15s;
+    -webkit-transition: border-color ease-in-out 0.55s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out 0.55s, box-shadow ease-in-out .15s;
+}
+
+#ShowGraphValidateCodeModal .modal-open {
+    overflow: hidden;
+}
+
+#ShowGraphValidateCodeModal .modal-body .validationcode {
+    position: absolute;
+    top: 11px;
+    left: 170px;
+    right: auto;
+}
+
+    #ShowGraphValidateCodeModal .modal-body .validationcode img {
+        height: auto;
+        position: absolute;
+        left: 10px;
+    }
+
+#ShowGraphValidateCodeModal .modal-body .field-validation-error {
+    line-height: 26px;
+    padding-top: 5px;
+    color: red;
+    font-size: 12px;
+}
+
+#ShowGraphValidateCodeModal #GraphValidateCode {
+    width: 40%;
+    line-height: 22px;
+    padding: 6px;
+    border: 1px solid #D9D9D9;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    display: block;
+    font-size: 14px;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    height:auto;
+}
+
+#ShowGraphValidateCodeModal .btn {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-decoration: none;
+}

@@ -1,0 +1,33 @@
+﻿@charset "utf-8";
+
+/* 用户注册登录 */
+.userLogged { display: block; height: 26px; line-height: 26px; margin-right:8px; float:left; margin-top:2px;}
+.userLogged .split { margin: 0 8px;}
+.userLogged .notlogged .split{float:none !important;}
+.userLogged .loggedin>a,
+.userLogged .loggedin>span { float: left;}
+.userLogged .loggedin .signinSum,
+.userLogged .loggedin .myMsg { width: 26px; height: 26px; overflow: hidden; background: url(../img/icons-userlogged.png) -37px -37px no-repeat; vertical-align: top; position: relative;}
+.userLogged .loggedin .myMsg { background-position: -37px -237px;}
+.userLogged .loggedin .signinSum:hover,
+.userLogged .loggedin .myMsg:hover,
+.userLogged .loggedin .hasMsg { background-image: url(../img/icons-userlogged-on.png);}
+.userLogged .loggedin .hasMsg:after { content: ""; display: block; width: 6px; height: 6px; position: absolute; right: 2px; top: 2px; background: #fc5f3d; border-radius: 3px;}
+.userLogged .userDropdown { float: left; margin: 0; position: relative;}
+.userLogged .userDropdown .ud-hd { height: 26px; line-height: 26px;}
+.userLogged .userDropdown .avatar { float: left; width: 26px; height: 26px; overflow: hidden; background: #fff; border-radius: 50%; overflow: hidden; margin-right: 7px; margin-top: 0px;}
+.userLogged .userDropdown .avatar img { width: 26px; height: 26px;}
+.userLogged .userDropdown .nickname { position: relative; float: left; height: 26px; padding-right: 20px; font-weight:bold}
+.userLogged .userDropdown .nickname:hover{text-decoration:none; color:#226693}
+.userLogged .userDropdown .nickname:after { content: ""; display: block; width: 11px; height: 6px; background: url(../img/userlogged-arrow.png) 0px 0px no-repeat; position: absolute; top: 50%; margin-top:-3px; right: 0px;transition: all .2s;}
+.userLogged .userDropdown .ud-bd {width: 110px;top: 26px;clear: both;display: none;padding-top:4px;position: absolute;z-index:90;right: 0;}
+.userLogged .userDropdown .ud-bd ul{display:block; padding:7px; background:#fff; -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); }
+.userLogged .userDropdown .ud-bd li {text-align: center;height: 38px;border-bottom:1px solid #eaeaea;line-height: 38px;padding: 0 10px 0px 24px;background: url(../img/icons-userlogged.png) -37px -431px no-repeat;}
+.userLogged .userDropdown .ud-bd li a{color:#333}
+.userLogged .userDropdown .ud-bd li a:hover{color:#226693; text-decoration:none;}
+.userLogged .userDropdown .ud-bd li.last{border-bottom:none}
+.userLogged .userDropdown .ud-bd li.li2{background-position:-37px -631px}
+.userLogged .userDropdown .ud-bd li.li3{background-position:-37px -831px}
+.userLogged .userDropdown .ud-bd li.li4{background-position:-37px -1031px}
+.userLogged .on .nickname:after{transform: rotate(180deg);}
+.userLogged .on .ud-bd { display: block;}
